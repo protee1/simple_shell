@@ -77,27 +77,73 @@ int find_builtin(info_t *info)
  */
 void find_cmd(info_t *t)
 {
-
-char *path = NULL;
-int i,k;
-
-info->path = NULL;
-if (info->linecount_flag == 1)
+	char *path = NULL;
+	int i, k;
+	info->path = info->argv[0];
+	if (info->linecount_flag ==1)
+	{
+		info->line_count++;
+		info->linecount_flag == 0;
+	}
+	for (i = 0, k = 0; info->arg[i]; i++)
+	{
+		if(!is_delim(info->arg[i], "\t\n"))
+			k++;
+	}
+	if (!k)
+		return;
+	path = find_path(info, _getenv(info, "PATH="), info->argv[0]);
+	if (path)
+	{
+		info->path = path;
+		fork_cmd(info);
+	}
+	else
+	{
+		if ((interactive(info) || _getenv(info, "PATH=")
+					||info->argv[0][0] == '/') && is_cmd(info, info->argv[0]))
+	
+			fork_cmd(info);
+		eles if (*(inf->arg) != '\n')
+		{
+			info->status = 127;
+			print_error(info, "not found\n");
+		}
+	}
+}
+/**
+ * fork_cmd - forks  an exec thread to run cmd
+ * @info: the parameter & return info struct
+ * Return: void
+ */
+void fork_cmd(info_t *t)
 {
-	info->line_count++;
-	info->linecount_flag = 0;
-}
-for (i = 0, k = 0; info->arg[i]; i++)
-if (!is_delim(info->[i], "\t\n"))
-k++;
-if (!k)
-	return;
+	pid_t child_pid;
+	child_pid = fork();
+	if (child_pid == -1)
+	{
+		/* TODO: PUT ERROR FUNCTION */
+		perror("Error:");
+		return;
+	
+	if (child_pid == 0)
+		if(excev(info->path, info->argv, get_environ(info)) == -1)
+		{
+			free_info(info, 1);
+			if (errno == EACESS)
+				exit(126);
+			ecit(1);
+		}
+	}
+	else
+	{
+		wait(&(info->status));
+		if (EIFEXITED(info->status))
+		{
+			info->sttaus = WECITSTATUS(info->status);
+			if(info->status == 126)
+				print_error(info, "Permission denied\n");
+		}
+	}
 
-path = find_path(info,_getenv(info,"PATH"),  info->argv[0]);
-if(path)
-{
-	inf->path = path
-	fork
 }
-}
-
