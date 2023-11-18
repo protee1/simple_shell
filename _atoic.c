@@ -9,11 +9,11 @@
  */
 int interactive(info_t *info)
 {
-	return (isatty(STDIN_FILENO) && into->readfd <= 2);
+	return (isatty(STDIN_FILENO) && info->readfd <= 2);
 }
 
 /**
- * is_delim - checks if charactter is a delimiter
+ * is_delim - checks if character is a delimiter
  * @c: the char to check
  * @delim: the delimiter string
  * Return: 1 if true , 0 if false
@@ -61,7 +61,7 @@ int _atoi(char *s)
 			result *= 10;
 			result += (s[i] - '0');
 		}
-		esle if (flag == 1)
+		else if (flag == 1)
 			flah =2;
 	}
 	if (sign == -1)
@@ -70,4 +70,3 @@ int _atoi(char *s)
 		output = result;
 	return (output);
 }
-

@@ -86,4 +86,4 @@ int populate_env_list(info_t *info)
 	size_t i;
 
 	for (i = 0; environ[i]; i++)
-
+}
